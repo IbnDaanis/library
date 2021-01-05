@@ -7,6 +7,12 @@ const author = document.querySelector('#author')
 const title = document.querySelector('#title')
 const pages = document.querySelector('#pages')
 const isRead = document.querySelector('#isRead')
+const addABookHere = document.querySelector('#addABookHere')
+
+setTimeout(() => {
+  addABookHere.style.opacity = '0'
+}, 8000)
+if (addABookHere.style.opacity === '0') addABookHere.style.display = none
 
 let myLibrary = localStorage.getItem('myLibrary')
   ? JSON.parse(localStorage.getItem('myLibrary'))

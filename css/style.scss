@@ -34,6 +34,7 @@ nav {
   justify-content: center;
   align-items: center;
   border-bottom: 1px solid rgb(219, 219, 219);
+  position: relative;
   .container {
     display: flex;
     justify-content: space-between;
@@ -43,6 +44,15 @@ nav {
       font-size: 2rem;
       color: rgb(29, 29, 29);
     }
+    .addABookHere {
+      position: absolute;
+      top: 50%;
+      right: 17%;
+      transition: opacity 0.5s ease-in-out;
+      animation: 1s linear 0s infinite alternate hover;
+      pointer-events: none;
+    }
+
     button {
       color: var(--main-color);
       background: none;
@@ -207,5 +217,14 @@ main {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
+  }
+}
+
+@keyframes hover {
+  from {
+    transform: translateY(-10px);
+  }
+  to {
+    transform: translateY(-2px);
   }
 }

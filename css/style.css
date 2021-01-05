@@ -41,6 +41,7 @@ nav {
       -ms-flex-align: center;
           align-items: center;
   border-bottom: 1px solid #dbdbdb;
+  position: relative;
 }
 
 nav .container {
@@ -59,6 +60,17 @@ nav .container h1 {
   font-weight: 500;
   font-size: 2rem;
   color: #1d1d1d;
+}
+
+nav .container .addABookHere {
+  position: absolute;
+  top: 50%;
+  right: 17%;
+  -webkit-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
+  -webkit-animation: 1s linear 0s infinite alternate hover;
+          animation: 1s linear 0s infinite alternate hover;
+  pointer-events: none;
 }
 
 nav .container button {
@@ -265,5 +277,27 @@ main .container .library-container .book-item button:hover {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
+}
+
+@-webkit-keyframes hover {
+  from {
+    -webkit-transform: translateY(-10px);
+            transform: translateY(-10px);
+  }
+  to {
+    -webkit-transform: translateY(-2px);
+            transform: translateY(-2px);
+  }
+}
+
+@keyframes hover {
+  from {
+    -webkit-transform: translateY(-10px);
+            transform: translateY(-10px);
+  }
+  to {
+    -webkit-transform: translateY(-2px);
+            transform: translateY(-2px);
+  }
 }
 /*# sourceMappingURL=style.css.map */
