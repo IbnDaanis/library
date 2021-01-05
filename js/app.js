@@ -13,6 +13,9 @@ function Book(author, title, pages, isRead) {
   this.title = title
   this.pages = pages
   this.isRead = isRead
+  this.id = (
+    Date.now().toString(36) + Math.random().toString(36).substr(2, 5)
+  ).toUpperCase()
 }
 
 const addBookToLibrary = (author, title, pages, isRead) => {
@@ -21,8 +24,8 @@ const addBookToLibrary = (author, title, pages, isRead) => {
   console.log(myLibrary)
 }
 
-const removeBook = title => {
-  myLibrary = myLibrary.filter(book => book.title !== title)
+const removeBook = id => {
+  myLibrary = myLibrary.filter(book => book.id !== id)
 }
 
 const addBookToDom = library => {
@@ -30,7 +33,7 @@ const addBookToDom = library => {
   library.forEach(book => {
     const div = document.createElement('div')
     div.classList.add('card')
-
+    div.setAttribute('data-id', book.id)
     const title = document.createElement('h1')
     title.textContent = book.title
     const author = document.createElement('p')
@@ -39,9 +42,9 @@ const addBookToDom = library => {
     pages.textContent = book.pages
 
     const submit = document.createElement('button')
-    submit.textContent = 'Add book'
+    submit.textContent = 'Remove Book'
     submit.onclick = () => {
-      removeBook(book.title)
+      removeBook(book.id)
       addBookToDom(myLibrary)
     }
     div.appendChild(title)
