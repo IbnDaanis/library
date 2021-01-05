@@ -28,7 +28,7 @@ body {
 }
 
 nav {
-  background: var(--dark-color);
+  background: var(--bg-color);
   height: 80px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -39,6 +39,7 @@ nav {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  border-bottom: 1px solid #dbdbdb;
 }
 
 nav .container {
@@ -56,11 +57,11 @@ nav .container {
 nav .container h1 {
   font-weight: 500;
   font-size: 2rem;
-  color: white;
+  color: var(--dark-color);
 }
 
 nav .container button {
-  color: white;
+  color: var(--dark-color);
   background: none;
   outline: none;
   cursor: pointer;
@@ -72,6 +73,52 @@ nav .container button {
 
 nav .container button:hover {
   color: var(--main-color);
+}
+
+main .container .library-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 3rem;
+}
+
+main .container .library-container .book-item {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  background: var(--dark-color);
+  color: white;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-right: 2rem;
+  overflow: hidden;
+}
+
+main .container .library-container .book-item h2 {
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+main .container .library-container .book-item button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #da1212;
+  color: white;
+  font-weight: 500;
+  border-radius: 0 0px 0 5px;
+  height: 20px;
+  width: 20px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
+}
+
+main .container .library-container .book-item button:hover {
+  -webkit-filter: brightness(0.9);
+          filter: brightness(0.9);
 }
 
 .modal {
@@ -154,8 +201,8 @@ nav .container button:hover {
 }
 
 .modal .form button:hover {
-  -webkit-filter: opacity(0.9);
-          filter: opacity(0.9);
+  -webkit-filter: brightness(0.9);
+          filter: brightness(0.9);
 }
 
 .modal .form button:active {

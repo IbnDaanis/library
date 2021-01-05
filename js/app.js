@@ -38,17 +38,18 @@ const addBookToDom = library => {
   libraryContainer.innerHTML = ''
   library.forEach(book => {
     const div = document.createElement('div')
-    div.classList.add('card')
+    div.classList.add('book-item')
     div.setAttribute('data-id', book.id)
-    const title = document.createElement('h1')
+    const title = document.createElement('h2')
     title.textContent = book.title
     const author = document.createElement('p')
-    author.textContent = book.author
+    author.textContent = `Author: ${book.author}`
     const pages = document.createElement('p')
-    pages.textContent = book.pages
-
+    pages.textContent = `Pages: ${book.pages}`
+    const read = document.createElement('p')
+    read.textContent = `${book.isRead ? 'Read' : 'Not read'}`
     const submit = document.createElement('button')
-    submit.textContent = 'Remove Book'
+    submit.textContent = 'X'
     submit.onclick = () => {
       removeBook(book.id)
       addBookToDom(myLibrary)
@@ -56,6 +57,7 @@ const addBookToDom = library => {
     div.appendChild(title)
     div.appendChild(author)
     div.appendChild(pages)
+    div.appendChild(read)
     div.appendChild(submit)
 
     libraryContainer.appendChild(div)
