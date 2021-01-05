@@ -39,6 +39,7 @@ const addBookToDom = library => {
   library.forEach(book => {
     const div = document.createElement('div')
     div.classList.add('book-item')
+    book.isRead && div.classList.add('read')
     div.setAttribute('data-id', book.id)
     const title = document.createElement('h2')
     title.textContent = book.title
@@ -48,18 +49,31 @@ const addBookToDom = library => {
     pages.textContent = `Pages: ${book.pages}`
     const read = document.createElement('p')
     read.textContent = `${book.isRead ? 'Read' : 'Not read'}`
+    const toggleRead = document.createElement('p')
+    toggleRead.classList.add('toggle-read')
+    toggleRead.style.opacity = '0'
+    toggleRead.textContent = `Click to ${
+      book.isRead ? 'mark as unread' : 'mark as read'
+    }`
     const submit = document.createElement('button')
     submit.textContent = 'X'
     submit.onclick = () => {
       removeBook(book.id)
       addBookToDom(myLibrary)
     }
+
     div.appendChild(title)
     div.appendChild(author)
     div.appendChild(pages)
     div.appendChild(read)
     div.appendChild(submit)
+    div.appendChild(toggleRead)
+    div.onclick = () => {
+      book.isRead = !book.isRead
 
+      console.log(book.isRead)
+      addBookToDom(myLibrary)
+    }
     libraryContainer.appendChild(div)
   })
 }
@@ -82,7 +96,6 @@ form.addEventListener('submit', e => {
 })
 
 document.body.addEventListener('click', e => {
-  console.log(e.target)
   if (e.target.classList.contains('overlay')) {
     modal.classList.toggle('closed')
   }
