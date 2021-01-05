@@ -12,11 +12,11 @@ const addABookHere = document.querySelector('#addABookHere')
 setTimeout(() => {
   addABookHere.style.opacity = '0'
 }, 8000)
-if (addABookHere.style.opacity === '0') addABookHere.style.display = none
 
 let myLibrary = localStorage.getItem('myLibrary')
   ? JSON.parse(localStorage.getItem('myLibrary'))
   : []
+if (myLibrary.length > 1) addABookHere.style.display = ' none'
 
 function Book(author, title, pages, isRead) {
   this.author = author
@@ -31,7 +31,6 @@ function Book(author, title, pages, isRead) {
 const addBookToLibrary = (author, title, pages, isRead) => {
   const newBook = new Book(author, title, pages, isRead)
   myLibrary.push(newBook)
-  console.log(myLibrary)
   localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
 }
 
@@ -76,8 +75,7 @@ const addBookToDom = library => {
     div.appendChild(toggleRead)
     div.onclick = () => {
       book.isRead = !book.isRead
-
-      console.log(book.isRead)
+      localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
       addBookToDom(myLibrary)
     }
     libraryContainer.appendChild(div)
@@ -91,7 +89,6 @@ addBook.addEventListener('click', () => {
 
 form.addEventListener('submit', e => {
   e.preventDefault()
-  console.log(isRead.checked)
   addBookToLibrary(author.value, title.value, pages.value, isRead.checked)
   addBookToDom(myLibrary)
   modal.classList.toggle('closed')

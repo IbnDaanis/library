@@ -18,7 +18,7 @@ body {
   background: var(--bg-color);
   color: #202020;
   position: relative;
-  min-width: 100vh;
+  min-height: 100vh;
   overflow-x: hidden;
 }
 
@@ -62,10 +62,15 @@ nav .container h1 {
   color: #1d1d1d;
 }
 
-nav .container .addABookHere {
+nav .container .add {
+  position: relative;
+}
+
+nav .container .add .addABookHere {
   position: absolute;
   top: 50%;
-  right: 17%;
+  left: -500%;
+  width: 160px;
   -webkit-transition: opacity 0.5s ease-in-out;
   transition: opacity 0.5s ease-in-out;
   -webkit-animation: 1s linear 0s infinite alternate hover;
@@ -73,7 +78,13 @@ nav .container .addABookHere {
   pointer-events: none;
 }
 
-nav .container button {
+@media (max-width: 550px) {
+  nav .container .add .addABookHere {
+    display: none;
+  }
+}
+
+nav .container .add button {
   color: var(--main-color);
   background: none;
   outline: none;
@@ -84,7 +95,7 @@ nav .container button {
   transition: 0.2s ease-in-out;
 }
 
-nav .container button:hover {
+nav .container .add button:hover {
   -webkit-filter: brightness(1.1);
           filter: brightness(1.1);
 }
@@ -94,6 +105,16 @@ main .container .library-container {
   display: -ms-flexbox;
   display: flex;
   margin-top: 3rem;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+@media (max-width: 1050px) {
+  main .container .library-container {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
 }
 
 main .container .library-container .book-item {
@@ -106,8 +127,15 @@ main .container .library-container .book-item {
           box-shadow: 2px 1px 10px 4px rgba(128, 128, 128, 0.267);
   padding: 1rem;
   border-radius: 5px;
-  margin-right: 2rem;
+  margin: 0 2rem 2rem 0;
   overflow: hidden;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  main .container .library-container .book-item {
+    margin: 0 1rem 2rem;
+  }
 }
 
 main .container .library-container .book-item .toggle-read {
@@ -131,6 +159,7 @@ main .container .library-container .book-item .toggle-read {
           align-items: center;
   -webkit-transition: opacity 0.2s ease-in-out;
   transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
 }
 
 main .container .library-container .book-item:hover .toggle-read {
@@ -138,8 +167,8 @@ main .container .library-container .book-item:hover .toggle-read {
 }
 
 main .container .library-container .book-item.read {
-  -webkit-filter: brightness(0.5);
-          filter: brightness(0.5);
+  -webkit-filter: brightness(0.7);
+          filter: brightness(0.7);
 }
 
 main .container .library-container .book-item h2 {
