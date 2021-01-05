@@ -1,5 +1,7 @@
 const container = document.querySelector('.container')
 const libraryContainer = document.querySelector('#libraryContainer')
+const addBook = document.querySelector('#addBook')
+const modal = document.querySelector('.modal')
 const form = document.querySelector('form')
 const author = document.querySelector('#author')
 const title = document.querySelector('#title')
@@ -61,6 +63,10 @@ const addBookToDom = library => {
 }
 addBookToDom(myLibrary)
 
+addBook.addEventListener('click', () => {
+  modal.classList.toggle('closed')
+})
+
 form.addEventListener('submit', e => {
   e.preventDefault()
   console.log(isRead.checked)
@@ -70,4 +76,11 @@ form.addEventListener('submit', e => {
   title.value = ''
   pages.value = ''
   isRead.value = 'off'
+})
+
+document.body.addEventListener('click', e => {
+  console.log(e.target)
+  if (e.target.classList.contains('overlay')) {
+    modal.classList.toggle('closed')
+  }
 })

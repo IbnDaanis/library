@@ -8,7 +8,21 @@
     <!-- <link rel="icon" type="image/png" sizes="32x32" href=""/> -->
   </head>
   <body>
-    <div class="container">
+    <nav class="nav">
+      <div class="container">
+        <h1>The Web Library</h1>
+        <button id="addBook">+</button>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <div class="library-container" id="libraryContainer">
+          <div class="bookItem"></div>
+        </div>
+      </div>
+    </main>
+    <div class="modal closed">
+      <div class="overlay"></div>
       <form class="form">
         <label for="author">Author</label>
         <input type="text" id="author" name="author" required />
@@ -20,9 +34,6 @@
         <input type="checkbox" id="isRead" name="isRead" />
         <button type="submit">Add a book</button>
       </form>
-      <div class="library-container" id="libraryContainer">
-        <div class="bookItem"></div>
-      </div>
     </div>
     <script src="./js/app.js"></script>
   </body>
