@@ -4,17 +4,19 @@ const form = document.querySelector('form')
 const author = document.querySelector('#author')
 const title = document.querySelector('#title')
 const pages = document.querySelector('#pages')
+const isRead = document.querySelector('#isRead')
 
 let myLibrary = []
 
-function Book(author, title, pages) {
+function Book(author, title, pages, isRead) {
   this.author = author
   this.title = title
   this.pages = pages
+  this.isRead = isRead
 }
 
-const addBookToLibrary = (author, title, pages) => {
-  const newBook = new Book(author, title, pages)
+const addBookToLibrary = (author, title, pages, isRead) => {
+  const newBook = new Book(author, title, pages, isRead)
   myLibrary.push(newBook)
   console.log(myLibrary)
 }
@@ -28,12 +30,14 @@ const addBookToDom = library => {
   library.forEach(book => {
     const div = document.createElement('div')
     div.classList.add('card')
+
     const title = document.createElement('h1')
     title.textContent = book.title
     const author = document.createElement('p')
     author.textContent = book.author
     const pages = document.createElement('p')
     pages.textContent = book.pages
+
     const submit = document.createElement('button')
     submit.textContent = 'Add book'
     submit.onclick = () => {
@@ -51,9 +55,11 @@ const addBookToDom = library => {
 
 form.addEventListener('submit', e => {
   e.preventDefault()
-  addBookToLibrary(author.value, title.value, pages.value)
+  console.log(isRead.checked)
+  addBookToLibrary(author.value, title.value, pages.value, isRead.checked)
   addBookToDom(myLibrary)
   author.value = ''
   title.value = ''
   pages.value = ''
+  isRead.value = 'off'
 })
