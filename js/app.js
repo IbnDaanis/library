@@ -1,12 +1,14 @@
 const container = document.querySelector('.container')
-const books = document.querySelector('.books')
+const libraryContainer = document.querySelector('#libraryContainer')
 const form = document.querySelector('form')
 const author = document.querySelector('#author')
 const title = document.querySelector('#title')
 const pages = document.querySelector('#pages')
 const isRead = document.querySelector('#isRead')
 
-let myLibrary = []
+let myLibrary = localStorage.getItem('myLibrary')
+  ? JSON.parse(localStorage.getItem('myLibrary'))
+  : []
 
 function Book(author, title, pages, isRead) {
   this.author = author
@@ -22,14 +24,16 @@ const addBookToLibrary = (author, title, pages, isRead) => {
   const newBook = new Book(author, title, pages, isRead)
   myLibrary.push(newBook)
   console.log(myLibrary)
+  localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
 }
 
 const removeBook = id => {
   myLibrary = myLibrary.filter(book => book.id !== id)
+  localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
 }
 
 const addBookToDom = library => {
-  books.innerHTML = ''
+  libraryContainer.innerHTML = ''
   library.forEach(book => {
     const div = document.createElement('div')
     div.classList.add('card')
@@ -52,9 +56,10 @@ const addBookToDom = library => {
     div.appendChild(pages)
     div.appendChild(submit)
 
-    books.appendChild(div)
+    libraryContainer.appendChild(div)
   })
 }
+addBookToDom(myLibrary)
 
 form.addEventListener('submit', e => {
   e.preventDefault()
