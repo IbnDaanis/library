@@ -72,6 +72,7 @@ form.addEventListener('submit', e => {
   console.log(isRead.checked)
   addBookToLibrary(author.value, title.value, pages.value, isRead.checked)
   addBookToDom(myLibrary)
+  modal.classList.toggle('closed')
   author.value = ''
   title.value = ''
   pages.value = ''
