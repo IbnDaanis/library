@@ -73,34 +73,34 @@ const addBookToDom = library => {
       addBookToDom(myLibrary)
     }
 
-    const toggleIsReadButton = `
-    <div class="is-read toggle-read">
-    <label class="toggle" for="thisIsRead${book.id}"
-      >Have you read the book?
-      <input
-        type="checkbox"
-        id="thisIsRead${book.id}"
-        name="thisIsRead${book.id}"
-        class="is-read-checkbox"
-      />
-      <span class="toggle__fill"></span>
-    </label>
-  </div>
-    `
+    const isRead = document.createElement('div')
+    isRead.classList.add('is-read', 'toggle-read')
+    const toggle = document.createElement('label')
+    toggle.textContent = 'Book read?'
+    toggle.for = `thisIsRead${book.id}`
+    toggle.classList.add('toggle')
+    isRead.appendChild(toggle)
+    const checkbox = document.createElement('input')
+    checkbox.type = 'checkbox'
+    checkbox.id = `thisIsRead${book.id}`
+    checkbox.classList.add('is-read-checkbox')
+    checkbox.onchange = () => {
+      book.isRead = !book.isRead
+      localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
+      addBookToDom(myLibrary)
+    }
+    checkbox.checked = book.isRead
+    toggle.appendChild(checkbox)
+    const toggleFill = document.createElement('span')
+    toggleFill.classList.add('toggle__fill')
+    toggle.appendChild(toggleFill)
 
     div.appendChild(title)
     div.appendChild(author)
     div.appendChild(pages)
     div.appendChild(read)
-    read.insertAdjacentHTML('afterend', toggleIsReadButton)
     div.appendChild(removeBookButton)
-    div.querySelector(`.toggle-read`).addEventListener('click', () => {
-      book.isRead = !book.isRead
-      localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
-      addBookToDom(myLibrary)
-    })
-    div.querySelector(`.toggle-read #thisIsRead${book.id}`).checked =
-      book.isRead
+    div.appendChild(isRead)
     libraryContainer.appendChild(div)
   })
 }
