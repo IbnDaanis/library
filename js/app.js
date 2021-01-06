@@ -39,6 +39,12 @@ const removeBook = id => {
   localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
 }
 
+const toggleIsRead = item => {
+  item.isRead = !item.isRead
+  localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
+  addBookToDom(myLibrary)
+}
+
 const addBookToDom = library => {
   libraryContainer.innerHTML = ''
   library.forEach(book => {
@@ -60,24 +66,41 @@ const addBookToDom = library => {
     toggleRead.textContent = `Click to ${
       book.isRead ? 'mark as unread' : 'mark as read'
     }`
-    const submit = document.createElement('button')
-    submit.textContent = 'X'
-    submit.onclick = () => {
+    const removeBookButton = document.createElement('button')
+    removeBookButton.textContent = 'X'
+    removeBookButton.onclick = () => {
       removeBook(book.id)
       addBookToDom(myLibrary)
     }
+
+    const toggleIsReadButton = `
+    <div class="is-read toggle-read">
+    <label class="toggle" for="thisIsRead${book.id}"
+      >Have you read the book?
+      <input
+        type="checkbox"
+        id="thisIsRead${book.id}"
+        name="thisIsRead${book.id}"
+        class="is-read-checkbox"
+      />
+      <span class="toggle__fill"></span>
+    </label>
+  </div>
+    `
 
     div.appendChild(title)
     div.appendChild(author)
     div.appendChild(pages)
     div.appendChild(read)
-    div.appendChild(submit)
-    div.appendChild(toggleRead)
-    div.onclick = () => {
+    read.insertAdjacentHTML('afterend', toggleIsReadButton)
+    div.appendChild(removeBookButton)
+    div.querySelector(`.toggle-read`).addEventListener('click', () => {
       book.isRead = !book.isRead
       localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
       addBookToDom(myLibrary)
-    }
+    })
+    div.querySelector(`.toggle-read #thisIsRead${book.id}`).checked =
+      book.isRead
     libraryContainer.appendChild(div)
   })
 }

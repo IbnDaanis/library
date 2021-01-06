@@ -1,26 +1,3 @@
-$lime-green: #1db489;
-$bright-red: #dc414c;
-$facebook: #198ff5;
-$twitter: #1ca0f2;
-$instagram: linear-gradient(#fdc468, #df4996);
-$youtube: hsl(348, 97%, 39%);
-
-// Dark Theme
-$toggle-dark: linear-gradient(#378fe6, #3eda82);
-$very-dark-blue: #1e202a; //  Background
-$very-dark-blue-box: #1f212e; // Top BG Pattern
-$dark-desaturated-blue: #252a41; // Card BG
-$desaturated-blue: #8b97c6; // Text
-$white: #ffffff; // Text
-
-// Light Theme
-$toggle-light: hsl(230, 22%, 74%);
-$white: #ffffff; // BG
-$very-blue: #f5f7ff; // Top BG Pattern
-$light-grayish-blue: #f0f2fa; // Card BG
-$dark-grayish-blue: #63687e; // Text
-$very-dark-blue: #1e202a; // Text
-
 .modal {
   position: absolute;
   z-index: 100;
@@ -86,79 +63,6 @@ $very-dark-blue: #1e202a; // Text
         transform: translateY(1px);
       }
     }
-
-    .is-read {
-      padding: 0 0 2rem;
-      .toggle {
-        --width: 50px;
-        --height: calc(var(--width) / 2);
-        --border-radius: calc(var(--height) / 2);
-
-        display: inline-block;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        transition: all 0.3s ease-in-out;
-      }
-
-      .toggle-dark {
-        &:hover {
-          color: $white;
-        }
-      }
-
-      .is-read-checkbox {
-        display: none;
-      }
-
-      .toggle__fill {
-        position: relative;
-        width: var(--width);
-        height: var(--height);
-        border-radius: var(--border-radius);
-        background: rgb(184, 184, 184);
-        transition: filter 0.2s ease-in-out;
-        margin-left: 1rem;
-
-        &:hover {
-          filter: brightness(1.1);
-        }
-      }
-
-      .toggle__fill-dark {
-        background: var(--lime-green) !important;
-      }
-
-      .is-read-checkbox:checked ~ .toggle__fill {
-        background: var(--lime-green);
-
-        &:hover {
-          filter: brightness(1.1);
-        }
-      }
-
-      .toggle__fill::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: var(--height);
-        width: var(--height);
-        transform: scale(0.8);
-        background: rgb(223, 223, 223);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-        border-radius: var(--border-radius);
-        transition: transform 0.2s;
-      }
-
-      .is-read-checkbox:checked ~ .toggle__fill::after {
-        background: #fff !important;
-      }
-
-      .is-read-checkbox:checked ~ .toggle__fill::after {
-        transform: translateX(var(--height)) scale(0.8);
-      }
-    }
   }
 
   &.closed {
@@ -174,5 +78,78 @@ $very-dark-blue: #1e202a; // Text
   }
   to {
     transform: translateY(-2px);
+  }
+}
+
+.is-read {
+  padding: 0 0 2rem;
+  .toggle {
+    --width: 50px;
+    --height: calc(var(--width) / 2);
+    --border-radius: calc(var(--height) / 2);
+
+    display: inline-block;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .toggle-dark {
+    &:hover {
+      color: white;
+    }
+  }
+
+  .is-read-checkbox {
+    display: none;
+  }
+
+  .toggle__fill {
+    position: relative;
+    width: var(--width);
+    height: var(--height);
+    border-radius: var(--border-radius);
+    background: rgb(184, 184, 184);
+    transition: filter 0.2s ease-in-out;
+    margin-left: 1rem;
+
+    &:hover {
+      filter: brightness(1.1);
+    }
+  }
+
+  .toggle__fill-dark {
+    background: var(--lime-green) !important;
+  }
+
+  .is-read-checkbox:checked ~ .toggle__fill {
+    background: var(--lime-green);
+
+    &:hover {
+      filter: brightness(1.1);
+    }
+  }
+
+  .toggle__fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: var(--height);
+    width: var(--height);
+    transform: scale(0.8);
+    background: rgb(223, 223, 223);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    border-radius: var(--border-radius);
+    transition: transform 0.2s;
+  }
+
+  .is-read-checkbox:checked ~ .toggle__fill::after {
+    background: #fff !important;
+  }
+
+  .is-read-checkbox:checked ~ .toggle__fill::after {
+    transform: translateX(var(--height)) scale(0.8);
   }
 }

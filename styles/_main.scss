@@ -18,27 +18,16 @@ main {
         border-radius: 5px;
         margin: 0 2rem 2rem 0;
         overflow: hidden;
-        cursor: pointer;
 
         @media (max-width: 720px) {
           margin: 0 1rem 2rem;
         }
 
         .toggle-read {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          height: 20%;
-          width: 100%;
-          color: white;
-          z-index: 3;
-          background: rgba(0, 0, 0, 0.7);
-          text-align: center;
-          display: flex;
-          justify-content: center;
-          align-items: center;
           transition: opacity 0.2s ease-in-out;
-          pointer-events: none;
+          opacity: 0;
+          padding: 1.5rem 0.2rem 0 0.2rem;
+          color: #6b7280;
         }
         &:hover {
           .toggle-read {
