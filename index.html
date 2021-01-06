@@ -35,13 +35,16 @@
         <label for="pages">Pages</label>
         <input type="number" id="pages" name="pages" required />
         <div class="is-read">
-          <label for="isRead">Have you read the book?</label>
-          <input
-            type="checkbox"
-            id="isRead"
-            name="isRead"
-            class="is-read-checkbox"
-          />
+          <label class="toggle" for="isRead"
+            >Have you read the book?
+            <input
+              type="checkbox"
+              id="isRead"
+              name="isRead"
+              class="is-read-checkbox"
+            />
+            <span class="toggle__fill"></span>
+          </label>
         </div>
         <button type="submit">Add a Book</button>
       </form>
