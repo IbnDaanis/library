@@ -31,19 +31,12 @@ class Library {
       pages.textContent = `Pages: ${book.pages}`
       const read = document.createElement('p')
       read.textContent = `${book.isRead ? 'Read' : 'Not read'}`
-      const toggleRead = document.createElement('p')
-      toggleRead.classList.add('toggle-read')
-      toggleRead.style.opacity = '0'
-      toggleRead.textContent = `Click to ${
-        book.isRead ? 'mark as unread' : 'mark as read'
-      }`
       const removeBookButton = document.createElement('button')
       removeBookButton.textContent = 'X'
       removeBookButton.onclick = () => {
         this.removeBook(book.id)
         this.addBookToDom(this.library)
       }
-
       const isRead = document.createElement('div')
       isRead.classList.add('is-read', 'toggle-read')
       const toggle = document.createElement('label')
