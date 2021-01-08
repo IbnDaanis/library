@@ -1,18 +1,3 @@
-const container = document.querySelector('.container')
-const libraryContainer = document.querySelector('#libraryContainer')
-const addBook = document.querySelector('#addBook')
-const modal = document.querySelector('.modal')
-const form = document.querySelector('form')
-const author = document.querySelector('#author')
-const title = document.querySelector('#title')
-const pages = document.querySelector('#pages')
-const isRead = document.querySelector('#isRead')
-const addABookHere = document.querySelector('#addABookHere')
-
-setTimeout(() => {
-  addABookHere.style.opacity = '0'
-}, 8000)
-
 class Library {
   constructor(library) {
     this.library = library
@@ -31,6 +16,7 @@ class Library {
     addBookToDom()
   }
   addBookToDom = (library = this.library) => {
+    const libraryContainer = document.querySelector('#libraryContainer')
     libraryContainer.innerHTML = ''
     library.forEach(book => {
       const div = document.createElement('div')
@@ -102,38 +88,53 @@ class Book {
   }
 }
 
-let libraryArr = localStorage.getItem('myLibrary')
-  ? JSON.parse(localStorage.getItem('myLibrary'))
-  : []
-if (libraryArr.library && libraryArr.library.length > 1)
-  addABookHere.style.display = ' none'
+const DOM_EVENTS = (() => {
+  const modal = document.querySelector('.modal')
+  const form = document.querySelector('form')
+  const author = document.querySelector('#author')
+  const title = document.querySelector('#title')
+  const pages = document.querySelector('#pages')
+  const isRead = document.querySelector('#isRead')
+  const addBook = document.querySelector('#addBook')
+  const addABookHere = document.querySelector('#addABookHere')
 
-const myLibrary = new Library(libraryArr)
-myLibrary.addBookToDom()
+  const libraryArr = localStorage.getItem('myLibrary')
+    ? JSON.parse(localStorage.getItem('myLibrary'))
+    : []
 
-addBook.addEventListener('click', () => {
-  modal.classList.toggle('closed')
-})
+  const myLibrary = new Library(libraryArr)
+  myLibrary.addBookToDom()
 
-form.addEventListener('submit', e => {
-  e.preventDefault()
-  const newBook = new Book(
-    author.value,
-    title.value,
-    pages.value,
-    isRead.checked
-  )
-  myLibrary.addBookToLibrary(newBook)
-  myLibrary.addBookToDom(myLibrary.library)
-  modal.classList.toggle('closed')
-  author.value = ''
-  title.value = ''
-  pages.value = ''
-  isRead.value = false
-})
+  if (libraryArr && libraryArr.length > 1) addABookHere.style.display = ' none'
 
-document.body.addEventListener('click', e => {
-  if (e.target.classList.contains('overlay')) {
+  setTimeout(() => {
+    addABookHere.style.opacity = '0'
+  }, 8000)
+
+  addBook.addEventListener('click', () => {
     modal.classList.toggle('closed')
-  }
-})
+  })
+
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    const newBook = new Book(
+      author.value,
+      title.value,
+      pages.value,
+      isRead.checked
+    )
+    myLibrary.addBookToLibrary(newBook)
+    myLibrary.addBookToDom(myLibrary.library)
+    modal.classList.toggle('closed')
+    author.value = ''
+    title.value = ''
+    pages.value = ''
+    isRead.checked = false
+  })
+
+  document.body.addEventListener('click', e => {
+    if (e.target.classList.contains('overlay')) {
+      modal.classList.toggle('closed')
+    }
+  })
+})()
