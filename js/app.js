@@ -13,19 +13,10 @@ setTimeout(() => {
   addABookHere.style.opacity = '0'
 }, 8000)
 
-class Library {
-  constructor(library) {
-    this.library = library
-  }
-}
-const myLibrary = new Library(
-  localStorage.getItem('myLibrary')
-    ? JSON.parse(localStorage.getItem('myLibrary'))
-    : []
-)
-
-// let myLibrary =
-if (myLibrary.library.library.length > 1) addABookHere.style.display = ' none'
+let myLibrary = localStorage.getItem('myLibrary')
+  ? JSON.parse(localStorage.getItem('myLibrary'))
+  : []
+if (myLibrary.length > 1) addABookHere.style.display = ' none'
 
 class Book {
   constructor(author, title, pages, isRead) {
@@ -41,21 +32,19 @@ class Book {
 
 const addBookToLibrary = (author, title, pages, isRead) => {
   const newBook = new Book(author, title, pages, isRead)
-  myLibrary.library.library.push(newBook)
+  myLibrary.push(newBook)
   localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
 }
 
 const removeBook = id => {
-  myLibrary.library.library = myLibrary.library.library.filter(
-    book => book.id !== id
-  )
+  myLibrary = myLibrary.filter(book => book.id !== id)
   localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
 }
 
 const toggleIsRead = item => {
   item.isRead = !item.isRead
   localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
-  addBookToDom(myLibrary.library.library)
+  addBookToDom(myLibrary)
 }
 
 const addBookToDom = library => {
@@ -83,7 +72,7 @@ const addBookToDom = library => {
     removeBookButton.textContent = 'X'
     removeBookButton.onclick = () => {
       removeBook(book.id)
-      addBookToDom(myLibrary.library.library)
+      addBookToDom(myLibrary)
     }
 
     const isRead = document.createElement('div')
@@ -100,7 +89,7 @@ const addBookToDom = library => {
     checkbox.onchange = () => {
       book.isRead = !book.isRead
       localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
-      addBookToDom(myLibrary.library.library)
+      addBookToDom(myLibrary)
     }
     checkbox.checked = book.isRead
     toggle.appendChild(checkbox)
@@ -117,7 +106,7 @@ const addBookToDom = library => {
     libraryContainer.appendChild(div)
   })
 }
-addBookToDom(myLibrary.library.library)
+addBookToDom(myLibrary)
 
 addBook.addEventListener('click', () => {
   modal.classList.toggle('closed')
@@ -126,7 +115,7 @@ addBook.addEventListener('click', () => {
 form.addEventListener('submit', e => {
   e.preventDefault()
   addBookToLibrary(author.value, title.value, pages.value, isRead.checked)
-  addBookToDom(myLibrary.library.library)
+  addBookToDom(myLibrary)
   modal.classList.toggle('closed')
   author.value = ''
   title.value = ''
