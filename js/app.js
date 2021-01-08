@@ -19,7 +19,7 @@ class Library {
   }
   addBookToLibrary = book => {
     this.library.push(book)
-    localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
+    localStorage.setItem('myLibrary', JSON.stringify(this.library))
   }
   removeBook = id => {
     this.library = this.library.filter(book => book.id !== id)
@@ -105,9 +105,10 @@ class Book {
 let libraryArr = localStorage.getItem('myLibrary')
   ? JSON.parse(localStorage.getItem('myLibrary'))
   : []
+if (libraryArr.library && libraryArr.library.length > 1)
+  addABookHere.style.display = ' none'
 
 const myLibrary = new Library(libraryArr)
-if (myLibrary.library.length > 1) addABookHere.style.display = ' none'
 myLibrary.addBookToDom()
 
 addBook.addEventListener('click', () => {
@@ -128,7 +129,7 @@ form.addEventListener('submit', e => {
   author.value = ''
   title.value = ''
   pages.value = ''
-  isRead.value = 'off'
+  isRead.value = false
 })
 
 document.body.addEventListener('click', e => {
