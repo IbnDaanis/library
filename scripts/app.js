@@ -82,11 +82,11 @@ class Book {
 }
 
 const DOM_EVENTS = (() => {
-  const modal = document.querySelector('.modal')
   const form = document.querySelector('form')
-  const author = document.querySelector('#author')
-  const title = document.querySelector('#title')
+  const modal = document.querySelector('.modal')
   const pages = document.querySelector('#pages')
+  const title = document.querySelector('#title')
+  const author = document.querySelector('#author')
   const isRead = document.querySelector('#isRead')
   const addBook = document.querySelector('#addBook')
   const addABookHere = document.querySelector('#addABookHere')
@@ -104,11 +104,9 @@ const DOM_EVENTS = (() => {
     addABookHere.style.opacity = '0'
   }, 8000)
 
-  addBook.addEventListener('click', () => {
-    modal.classList.toggle('closed')
-  })
+  addBook.onclick = () => modal.classList.toggle('closed')
 
-  form.addEventListener('submit', e => {
+  form.onsubmit = e => {
     e.preventDefault()
     const newBook = new Book(
       author.value,
@@ -123,11 +121,11 @@ const DOM_EVENTS = (() => {
     title.value = ''
     pages.value = ''
     isRead.checked = false
-  })
+  }
 
-  document.body.addEventListener('click', e => {
-    if (e.target.classList.contains('overlay')) {
+  document.body.onclick = ({ target }) => {
+    if (target.classList.contains('overlay')) {
       modal.classList.toggle('closed')
     }
-  })
+  }
 })()
