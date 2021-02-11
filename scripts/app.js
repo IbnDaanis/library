@@ -19,52 +19,13 @@ class Library {
     const libraryContainer = document.querySelector('#libraryContainer')
     libraryContainer.innerHTML = ''
     library.forEach(book => {
-      const div = document.createElement('div')
-      div.classList.add('book-item')
-      book.isRead && div.classList.add('read')
-      div.setAttribute('data-id', book.id)
-      const title = document.createElement('h2')
-      title.textContent = book.title
-      const author = document.createElement('p')
-      author.textContent = `Author: ${book.author}`
-      const pages = document.createElement('p')
-      pages.textContent = `Pages: ${book.pages}`
-      const read = document.createElement('p')
-      read.textContent = `${book.isRead ? 'Read' : 'Not read'}`
-      const removeBookButton = document.createElement('button')
-      removeBookButton.textContent = 'X'
-      removeBookButton.onclick = () => {
-        this.removeBook(book.id)
-        this.addBookToDom(this.library)
-      }
-      const isRead = document.createElement('div')
-      isRead.classList.add('is-read', 'toggle-read')
-      const toggle = document.createElement('label')
-      toggle.textContent = 'Book read?'
-      toggle.for = `thisIsRead${book.id}`
-      toggle.classList.add('toggle')
-      isRead.appendChild(toggle)
-      const checkbox = document.createElement('input')
-      checkbox.type = 'checkbox'
-      checkbox.id = `thisIsRead${book.id}`
-      checkbox.classList.add('is-read-checkbox')
-      checkbox.onchange = () => {
+      const element = bookContainer(book)
+      element.querySelector('input').onchange = () => {
         book.isRead = !book.isRead
         localStorage.setItem('myLibrary', JSON.stringify(this.library))
         this.addBookToDom(this.library)
       }
-      checkbox.checked = book.isRead
-      toggle.appendChild(checkbox)
-      const toggleFill = document.createElement('span')
-      toggleFill.classList.add('toggle__fill')
-      toggle.appendChild(toggleFill)
-      div.appendChild(title)
-      div.appendChild(author)
-      div.appendChild(pages)
-      div.appendChild(read)
-      div.appendChild(removeBookButton)
-      div.appendChild(isRead)
-      libraryContainer.appendChild(div)
+      libraryContainer.appendChild(element)
     })
   }
 }
