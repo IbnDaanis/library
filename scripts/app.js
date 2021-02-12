@@ -50,7 +50,6 @@ const DOM_EVENTS = (() => {
   const author = document.querySelector('#author')
   const isRead = document.querySelector('#isRead')
   const addBook = document.querySelector('#addBook')
-  const addABookHere = document.querySelector('#addABookHere')
 
   const libraryArr = localStorage.getItem('myLibrary')
     ? JSON.parse(localStorage.getItem('myLibrary'))
@@ -58,6 +57,13 @@ const DOM_EVENTS = (() => {
 
   const myLibrary = new Library(libraryArr)
   myLibrary.addBookToDom()
+
+  const _resetForm = () => {
+    author.value = ''
+    title.value = ''
+    pages.value = ''
+    isRead.checked = false
+  }
 
   addBook.onclick = () => modal.classList.toggle('closed')
 
@@ -72,10 +78,7 @@ const DOM_EVENTS = (() => {
     myLibrary.addBookToLibrary(newBook)
     myLibrary.addBookToDom(myLibrary.library)
     modal.classList.toggle('closed')
-    author.value = ''
-    title.value = ''
-    pages.value = ''
-    isRead.checked = false
+    _resetForm()
   }
 
   document.body.onclick = ({ target }) => {
