@@ -59,12 +59,6 @@ const DOM_EVENTS = (() => {
   const myLibrary = new Library(libraryArr)
   myLibrary.addBookToDom()
 
-  if (libraryArr && libraryArr.length > 1) addABookHere.style.display = ' none'
-
-  setTimeout(() => {
-    addABookHere.style.opacity = '0'
-  }, 8000)
-
   addBook.onclick = () => modal.classList.toggle('closed')
 
   form.onsubmit = e => {
