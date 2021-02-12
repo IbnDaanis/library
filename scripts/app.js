@@ -2,31 +2,35 @@ class Library {
   constructor(library) {
     this.library = library
   }
-  addBookToLibrary = book => {
-    this.library.push(book)
-    localStorage.setItem('myLibrary', JSON.stringify(this.library))
-  }
-  removeBook = id => {
-    this.library = this.library.filter(book => book.id !== id)
-    localStorage.setItem('myLibrary', JSON.stringify(this.library))
-  }
-  toggleIsRead = item => {
-    item.isRead = !item.isRead
-    localStorage.setItem('myLibrary', JSON.stringify(this.library))
-    addBookToDom()
-  }
   addBookToDom = (library = this.library) => {
     const libraryContainer = document.querySelector('#libraryContainer')
     libraryContainer.innerHTML = ''
     library.forEach(book => {
-      const element = bookContainer(book)
-      element.querySelector('input').onchange = () => {
-        book.isRead = !book.isRead
-        localStorage.setItem('myLibrary', JSON.stringify(this.library))
-        this.addBookToDom(this.library)
-      }
-      libraryContainer.appendChild(element)
+      const bookElement = bookContainer(
+        book,
+        this.toggleIsRead,
+        this.removeBook
+      )
+      libraryContainer.appendChild(bookElement)
     })
+  }
+  saveLibrary = () => {
+    localStorage.setItem('myLibrary', JSON.stringify(this.library))
+  }
+  addBookToLibrary = book => {
+    this.library.push(book)
+    this.saveLibrary()
+    this.addBookToDom()
+  }
+  removeBook = id => {
+    this.library = this.library.filter(book => book.id !== id)
+    this.saveLibrary()
+    this.addBookToDom()
+  }
+  toggleIsRead = item => {
+    item.isRead = !item.isRead
+    this.saveLibrary()
+    this.addBookToDom()
   }
 }
 

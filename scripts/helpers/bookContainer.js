@@ -1,4 +1,4 @@
-const bookContainer = book => {
+const bookContainer = (book, toggleIsRead, removeBook) => {
   const element = stringToHTML(
     `<div class="book-item ${book.isRead && 'read'}" data-id="${book.id}">
       <h2>${book.title}</h2>
@@ -16,6 +16,13 @@ const bookContainer = book => {
       </div>
     </div>`
   )
+
+  element.querySelector('input').onchange = () => {
+    toggleIsRead(book)
+  }
+  element.querySelector('button').onclick = () => {
+    removeBook(book.id)
+  }
 
   return element
 }
