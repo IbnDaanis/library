@@ -6,13 +6,16 @@ class Library {
     const libraryContainer = document.querySelector('#libraryContainer')
     libraryContainer.innerHTML = ''
     library.forEach(book => {
-      const bookElement = bookContainer(
-        book,
-        this.toggleIsRead,
-        this.removeBook
-      )
+      const bookElement = bookContainer(book)
       libraryContainer.appendChild(bookElement)
     })
+    libraryContainer.onclick = ({ target }) => {
+      if (target.dataset.delete) {
+        this.removeBook(target.parentElement.dataset.id)
+      } else if (target.dataset.isRead) {
+        this.toggleIsRead(target.dataset.id)
+      }
+    }
   }
   saveLibrary = () => {
     localStorage.setItem('myLibrary', JSON.stringify(this.library))
@@ -27,8 +30,11 @@ class Library {
     this.saveLibrary()
     this.addBookToDom()
   }
-  toggleIsRead = item => {
-    item.isRead = !item.isRead
+  toggleIsRead = id => {
+    this.library = this.library.map(book => {
+      book.id === id && (book.isRead = !book.isRead)
+      return book
+    })
     this.saveLibrary()
     this.addBookToDom()
   }

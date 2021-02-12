@@ -1,14 +1,14 @@
-const bookContainer = (book, toggleIsRead, removeBook) => {
+const bookContainer = book => {
   const element = stringToHTML(
     `<div class="book-item ${book.isRead && 'read'}" data-id="${book.id}">
       <h2>${book.title}</h2>
       <p>Author: ${book.author}</p>
       <p>Pages: ${book.pages}</p>
       <p>${book.isRead ? 'Read' : 'Not read'}</p>
-      <button>X</button>
+      <button data-delete="true">X</button>
       <div class="is-read toggle-read">
         <label class="toggle">Book read?
-        <input type="checkbox" id="thisIsRead${
+        <input type="checkbox" data-is-read="true" data-id="${
           book.id
         }" class="is-read-checkbox" ${book.isRead && 'checked'}>
         <span class="toggle__fill"></span>
@@ -16,13 +16,6 @@ const bookContainer = (book, toggleIsRead, removeBook) => {
       </div>
     </div>`
   )
-
-  element.querySelector('input').onchange = () => {
-    toggleIsRead(book)
-  }
-  element.querySelector('button').onclick = () => {
-    removeBook(book.id)
-  }
 
   return element
 }
