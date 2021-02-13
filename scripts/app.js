@@ -61,8 +61,8 @@ signInBtn.onclick = async () => {
   console.log(name)
 }
 
-signOutBtn.onclick = () => {
-  signOut()
+signOutBtn.onclick = async () => {
+  await signOut()
   console.log('Signed Out')
 }
 
