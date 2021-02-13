@@ -1,14 +1,34 @@
-// Signs-in Friendly Chat.
 function signIn() {
   // Sign into Firebase using popup auth & Google as the identity provider.
   const provider = new firebase.auth.GoogleAuthProvider()
-  firebase.auth().signInWithPopup(provider)
+  return firebase
+    .auth()
+    .signInWithPopup(provider)
+    .then(result => {
+      /** @type {firebase.auth.OAuthCredential} */
+      var credential = result.credential
+
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = credential.accessToken
+      // The signed-in user info.
+      var user = result.user
+      // ...
+    })
+    .catch(error => {
+      // Handle Errors here.
+      var errorCode = error.code
+      var errorMessage = error.message
+      // The email of the user's account used.
+      var email = error.email
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential
+      // ...
+    })
 }
 
-// Signs-out of Friendly Chat.
 function signOut() {
   // Sign out of Firebase.
-  firebase.auth().signOut()
+  return firebase.auth().signOut()
 }
 
 // Initiate Firebase Auth.
@@ -30,6 +50,20 @@ function getUserName() {
 // Returns true if a user is signed-in.
 function isUserSignedIn() {
   return !!firebase.auth().currentUser
+}
+
+const signInBtn = document.querySelector('#signIn')
+const signOutBtn = document.querySelector('#signOut')
+
+signInBtn.onclick = async () => {
+  await signIn()
+  const name = await getUserName()
+  console.log(name)
+}
+
+signOutBtn.onclick = () => {
+  signOut()
+  console.log('Signed Out')
 }
 
 class Library {
