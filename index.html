@@ -48,6 +48,25 @@
         <button type="submit">Add a Book</button>
       </form>
     </div>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: 'AIzaSyDJTgj9yEV7GH2lQxDCENC3XMP1KQfjvHg',
+        authDomain: 'library-e8a5b.firebaseapp.com',
+        projectId: 'library-e8a5b',
+        storageBucket: 'library-e8a5b.appspot.com',
+        messagingSenderId: '234876829643',
+        appId: '1:234876829643:web:b23b26602b69a68334c04e',
+      }
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig)
+    </script>
     <script src="./scripts/helpers/stringToHTML.js"></script>
     <script src="./scripts/helpers/bookContainer.js"></script>
     <script src="./scripts/app.js"></script>
