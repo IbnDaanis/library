@@ -104,9 +104,8 @@ class Library {
       .catch(err => console.error('Error adding book to database. ', err))
   }
   removeBook = id => {
-    // this.library = this.library.filter(book => book.id !== id)
-    return db
-      .collection(u)
+    this.library = this.library.filter(book => book.id !== id)
+    db.collection('users')
       .doc(firebase.auth().currentUser.uid)
       .collection('library')
       .doc(id)
@@ -126,9 +125,6 @@ class Book {
     this.title = title
     this.pages = pages
     this.isRead = isRead
-    this.id = (
-      Date.now().toString(36) + Math.random().toString(36).substr(2, 5)
-    ).toUpperCase()
   }
 }
 
@@ -142,9 +138,6 @@ const DOM_EVENTS = (() => {
   const addBook = document.querySelector('#addBook')
   const libraryContainer = document.querySelector('#libraryContainer')
 
-  const libraryArr = localStorage.getItem('myLibrary')
-    ? JSON.parse(localStorage.getItem('myLibrary'))
-    : []
   const myLibrary = new Library([])
 
   const _addBooksToDom = library => {
@@ -171,9 +164,13 @@ const DOM_EVENTS = (() => {
 
     query.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
-        console.log(change.doc.data())
+        console.log(change.doc.id)
+        if (change.type === 'removed') {
+          _addBooksToDom(myLibrary)
+          return
+        }
         const document = change.doc.data()
-        myLibrary.library.push(document)
+        myLibrary.library.push({ id: change.doc.id, ...document })
       })
       _addBooksToDom(myLibrary)
       console.log(myLibrary.library)
