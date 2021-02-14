@@ -113,9 +113,19 @@ class Library {
   }
   toggleIsRead = id => {
     this.library = this.library.map(book => {
-      book.id === id && (book.isRead = !book.isRead)
+      if (book.id === id) {
+        const isRead = book.isRead
+        db.collection('users')
+          .doc(firebase.auth().currentUser.uid)
+          .collection('library')
+          .doc(id)
+          .update({ isRead: !isRead })
+
+        book.isRead = !book.isRead
+      }
       return book
     })
+    console.log(this.library)
   }
 }
 
@@ -164,10 +174,8 @@ const DOM_EVENTS = (() => {
 
     query.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
-        console.log(change.doc.id)
-        if (change.type === 'removed') {
-          _addBooksToDom(myLibrary)
-          return
+        if (['modified', 'removed'].includes(change.type)) {
+          return _addBooksToDom(myLibrary)
         }
         const document = change.doc.data()
         myLibrary.library.push({ id: change.doc.id, ...document })
