@@ -100,7 +100,7 @@ class Library {
       obj[index] = item
       return obj
     }, {})
-    function saveMessage(item) {
+    const saveMessage = item => {
       return firebase
         .firestore()
         .collection(firebase.auth().currentUser.uid)
@@ -158,8 +158,27 @@ const DOM_EVENTS = (() => {
     ? JSON.parse(localStorage.getItem('myLibrary'))
     : []
 
-  const myLibrary = new Library(libraryArr)
-  myLibrary.addBookToDom()
+  const loadLibrary = () => {
+    const query = firebase
+      .firestore()
+      .collection(firebase.auth().currentUser.uid)
+
+    query.onSnapshot(snapshot => {
+      snapshot.docChanges().forEach(change => {
+        if (change.type === 'removed') {
+        } else {
+          const documents = change.doc.data()
+          const myLibrary = new Library(Object.values(documents))
+          myLibrary.addBookToDom()
+          console.log(myLibrary.library)
+        }
+      })
+    })
+  }
+
+  setTimeout(() => {
+    loadLibrary()
+  }, 1000)
 
   const _resetForm = () => {
     author.value = ''
