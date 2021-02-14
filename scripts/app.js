@@ -77,41 +77,46 @@ class Library {
     DOM_EVENTS.loadLibrary()
   }
   saveLibrary = () => {
-    localStorage.setItem('myLibrary', JSON.stringify(this.library))
-    const library = this.library.reduce((obj, item, index) => {
-      obj[index] = item
-      return obj
-    }, {})
-    const saveMessage = item => {
-      return firebase
-        .firestore()
-        .collection(firebase.auth().currentUser.uid)
-        .doc('library')
-        .set(item)
-        .catch(function (error) {
-          console.error('Error writing new message to database', error)
-        })
-    }
-    saveMessage(library)
-    console.log(library, this.library)
+    // localStorage.setItem('myLibrary', JSON.stringify(this.library))
+    // const library = this.library.reduce((obj, item, index) => {
+    //   obj[index] = item
+    //   return obj
+    // }, {})
+    // const saveMessage = item => {
+    //   return firebase
+    //     .firestore()
+    //     .collection('users')
+    //     .doc(firebase.auth().currentUser.uid)
+    //     .collection('library')
+    //     .doc(item)
+    //     .catch(function (error) {
+    //       console.error('Error writing new message to database', error)
+    //     })
+    // }
+    // saveMessage(library)
+    // console.log(library, this.library)
   }
   addBookToLibrary = book => {
-    this.library.push(book)
-    this.saveLibrary()
-    this.addBookToDom()
+    db.collection('users')
+      .doc(firebase.auth().currentUser.uid)
+      .collection('library')
+      .add(book)
+      .catch(err => console.error('Error adding book to database. ', err))
   }
   removeBook = id => {
-    this.library = this.library.filter(book => book.id !== id)
-    this.saveLibrary()
-    this.addBookToDom()
+    // this.library = this.library.filter(book => book.id !== id)
+    return db
+      .collection(u)
+      .doc(firebase.auth().currentUser.uid)
+      .collection('library')
+      .doc(id)
+      .delete()
   }
   toggleIsRead = id => {
     this.library = this.library.map(book => {
       book.id === id && (book.isRead = !book.isRead)
       return book
     })
-    this.saveLibrary()
-    this.addBookToDom()
   }
 }
 
@@ -140,9 +145,9 @@ const DOM_EVENTS = (() => {
   const libraryArr = localStorage.getItem('myLibrary')
     ? JSON.parse(localStorage.getItem('myLibrary'))
     : []
-  let myLibrary = []
+  const myLibrary = new Library([])
 
-  const _addBookToDom = library => {
+  const _addBooksToDom = library => {
     libraryContainer.innerHTML = ''
     myLibrary.library.forEach(book => {
       const bookElement = bookContainer(book)
@@ -160,16 +165,18 @@ const DOM_EVENTS = (() => {
   const loadLibrary = () => {
     const query = firebase
       .firestore()
-      .collection(firebase.auth().currentUser.uid)
+      .collection('users')
+      .doc(firebase.auth().currentUser.uid)
+      .collection('library')
 
     query.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
-        console.log(change)
-        const documents = change.doc.data()
-        myLibrary = new Library(Object.values(documents))
-        _addBookToDom(myLibrary)
-        console.log(myLibrary.library)
+        console.log(change.doc.data())
+        const document = change.doc.data()
+        myLibrary.library.push(document)
       })
+      _addBooksToDom(myLibrary)
+      console.log(myLibrary.library)
     })
   }
 
@@ -185,7 +192,7 @@ const DOM_EVENTS = (() => {
     isRead.checked = false
   }
 
-  const addBookToLibrary = () => {
+  const addBookToLibraryForm = () => {
     const newBook = new Book(
       author.value,
       title.value,
@@ -201,7 +208,7 @@ const DOM_EVENTS = (() => {
 
   form.onsubmit = e => {
     e.preventDefault()
-    addBookToLibrary()
+    addBookToLibraryForm()
     _resetForm()
   }
 
