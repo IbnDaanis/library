@@ -1,4 +1,6 @@
 const firebaseAuth = (() => {
+  const signInBtn = document.querySelector('#signIn')
+  const signOutBtn = document.querySelector('#signOut')
   const signIn = () => {
     // Sign into Firebase using popup auth & Google as the identity provider.
     const provider = new firebase.auth.GoogleAuthProvider()
@@ -19,6 +21,22 @@ const firebaseAuth = (() => {
 
   const signOut = () => {
     return firebase.auth().signOut()
+  }
+
+  const authStateObserver = user => {
+    if (user) {
+      // User is signed in!
+      // Get the signed-in user's profile pic and name.
+      const profilePicUrl = getProfilePicUrl()
+      const userName = getUserName()
+      signInBtn.style.display = 'none'
+      signOutBtn.style.display = 'block'
+    } else {
+      // User is signed out!
+      // Hide user's profile and sign-out button.
+      signOutBtn.style.display = 'none'
+      signInBtn.style.display = 'block'
+    }
   }
 
   const initFirebaseAuth = () => {
@@ -44,9 +62,13 @@ const firebaseAuth = (() => {
     signIn,
     signOut,
     getUserName,
+    initFirebaseAuth,
   }
 })()
-const { signIn, signOut, getUserName } = firebaseAuth
+const { signIn, signOut, getUserName, initFirebaseAuth } = firebaseAuth
+
+initFirebaseAuth()
+
 const signInBtn = document.querySelector('#signIn')
 const signOutBtn = document.querySelector('#signOut')
 
