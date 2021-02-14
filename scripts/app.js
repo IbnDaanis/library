@@ -29,9 +29,11 @@ const firebaseAuth = (() => {
       const userName = getUserName()
       signInBtn.style.display = 'none'
       signOutBtn.style.display = 'block'
+      DOM_EVENTS.loadLibrary()
     } else {
       signOutBtn.style.display = 'none'
       signInBtn.style.display = 'block'
+      DOM_EVENTS.clearLibrary()
     }
   }
 
@@ -55,44 +57,24 @@ const firebaseAuth = (() => {
     signIn,
     signOut,
     getUserName,
+    isUserSignedIn,
     initFirebaseAuth,
   }
 })()
-const { signIn, signOut, getUserName, initFirebaseAuth } = firebaseAuth
-
-initFirebaseAuth()
-
-const signInBtn = document.querySelector('#signIn')
-const signOutBtn = document.querySelector('#signOut')
-
-signInBtn.onclick = async () => {
-  await signIn()
-  console.log(firebase.auth().currentUser.uid)
-}
-
-signOutBtn.onclick = async () => {
-  await signOut()
-  console.log('Signed Out')
-}
+const {
+  signIn,
+  signOut,
+  getUserName,
+  isUserSignedIn,
+  initFirebaseAuth,
+} = firebaseAuth
 
 class Library {
   constructor(library) {
     this.library = library
   }
-  addBookToDom = (library = this.library) => {
-    const libraryContainer = document.querySelector('#libraryContainer')
-    libraryContainer.innerHTML = ''
-    library.forEach(book => {
-      const bookElement = bookContainer(book)
-      libraryContainer.appendChild(bookElement)
-    })
-    libraryContainer.onclick = ({ target }) => {
-      if (target.dataset.delete) {
-        this.removeBook(target.parentElement.dataset.id)
-      } else if (target.dataset.isRead) {
-        this.toggleIsRead(target.dataset.id)
-      }
-    }
+  addBookToDom = () => {
+    DOM_EVENTS.loadLibrary()
   }
   saveLibrary = () => {
     localStorage.setItem('myLibrary', JSON.stringify(this.library))
@@ -153,6 +135,7 @@ const DOM_EVENTS = (() => {
   const author = document.querySelector('#author')
   const isRead = document.querySelector('#isRead')
   const addBook = document.querySelector('#addBook')
+  const libraryContainer = document.querySelector('#libraryContainer')
 
   const libraryArr = localStorage.getItem('myLibrary')
     ? JSON.parse(localStorage.getItem('myLibrary'))
@@ -165,20 +148,34 @@ const DOM_EVENTS = (() => {
 
     query.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
+        console.log(change)
         if (change.type === 'removed') {
+          console.log(change)
         } else {
           const documents = change.doc.data()
           const myLibrary = new Library(Object.values(documents))
-          myLibrary.addBookToDom()
+
+          libraryContainer.innerHTML = ''
+          myLibrary.library.forEach(book => {
+            const bookElement = bookContainer(book)
+            libraryContainer.appendChild(bookElement)
+          })
+          libraryContainer.onclick = ({ target }) => {
+            if (target.dataset.delete) {
+              myLibrary.removeBook(target.parentElement.dataset.id)
+            } else if (target.dataset.isRead) {
+              myLibrary.toggleIsRead(target.dataset.id)
+            }
+          }
           console.log(myLibrary.library)
         }
       })
     })
   }
 
-  setTimeout(() => {
-    loadLibrary()
-  }, 1000)
+  const clearLibrary = () => {
+    libraryContainer.innerHTML = ''
+  }
 
   const _resetForm = () => {
     author.value = ''
@@ -208,4 +205,24 @@ const DOM_EVENTS = (() => {
       modal.classList.toggle('closed')
     }
   }
+
+  return {
+    loadLibrary,
+    clearLibrary,
+  }
 })()
+
+initFirebaseAuth()
+
+const signInBtn = document.querySelector('#signIn')
+const signOutBtn = document.querySelector('#signOut')
+
+signInBtn.onclick = async () => {
+  await signIn()
+  console.log(firebase.auth().currentUser.uid)
+}
+
+signOutBtn.onclick = async () => {
+  await signOut()
+  console.log('Signed Out')
+}
