@@ -1,45 +1,52 @@
-const signIn = () => {
-  // Sign into Firebase using popup auth & Google as the identity provider.
-  const provider = new firebase.auth.GoogleAuthProvider()
-  return firebase
-    .auth()
-    .signInWithPopup(provider)
-    .then(result => {
-      const credential = result.credential
-      const user = result.user
-    })
-    .catch(error => {
-      const errorCode = error.code
-      const errorMessage = error.message
-      const email = error.email
-      const credential = error.credential
-    })
-}
+const firebaseAuth = (() => {
+  const signIn = () => {
+    // Sign into Firebase using popup auth & Google as the identity provider.
+    const provider = new firebase.auth.GoogleAuthProvider()
+    return firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(result => {
+        const credential = result.credential
+        const user = result.user
+      })
+      .catch(error => {
+        const errorCode = error.code
+        const errorMessage = error.message
+        const email = error.email
+        const credential = error.credential
+      })
+  }
 
-const signOut = () => {
-  return firebase.auth().signOut()
-}
+  const signOut = () => {
+    return firebase.auth().signOut()
+  }
 
-const initFirebaseAuth = () => {
-  // Listen to auth state changes.
-  firebase.auth().onAuthStateChanged(authStateObserver)
-}
+  const initFirebaseAuth = () => {
+    // Listen to auth state changes.
+    firebase.auth().onAuthStateChanged(authStateObserver)
+  }
 
-// Returns the signed-in user's profile pic URL.
-const getProfilePicUrl = () => {
-  return firebase.auth().currentUser.photoURL
-}
+  // Returns the signed-in user's profile pic URL.
+  const getProfilePicUrl = () => {
+    return firebase.auth().currentUser.photoURL
+  }
 
-// Returns the signed-in user's display name.
-const getUserName = () => {
-  return firebase.auth().currentUser.displayName
-}
+  // Returns the signed-in user's display name.
+  const getUserName = () => {
+    return firebase.auth().currentUser.displayName
+  }
 
-// Returns true if a user is signed-in.
-const isUserSignedIn = () => {
-  return !!firebase.auth().currentUser
-}
-
+  // Returns true if a user is signed-in.
+  const isUserSignedIn = () => {
+    return !!firebase.auth().currentUser
+  }
+  return {
+    signIn,
+    signOut,
+    getUserName,
+  }
+})()
+const { signIn, signOut, getUserName } = firebaseAuth
 const signInBtn = document.querySelector('#signIn')
 const signOutBtn = document.querySelector('#signOut')
 
