@@ -1,54 +1,42 @@
-function signIn() {
+const signIn = () => {
   // Sign into Firebase using popup auth & Google as the identity provider.
   const provider = new firebase.auth.GoogleAuthProvider()
   return firebase
     .auth()
     .signInWithPopup(provider)
     .then(result => {
-      /** @type {firebase.auth.OAuthCredential} */
-      var credential = result.credential
-
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      var token = credential.accessToken
-      // The signed-in user info.
-      var user = result.user
-      // ...
+      const credential = result.credential
+      const user = result.user
     })
     .catch(error => {
-      // Handle Errors here.
-      var errorCode = error.code
-      var errorMessage = error.message
-      // The email of the user's account used.
-      var email = error.email
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential
-      // ...
+      const errorCode = error.code
+      const errorMessage = error.message
+      const email = error.email
+      const credential = error.credential
     })
 }
 
-function signOut() {
-  // Sign out of Firebase.
+const signOut = () => {
   return firebase.auth().signOut()
 }
 
-// Initiate Firebase Auth.
-function initFirebaseAuth() {
+const initFirebaseAuth = () => {
   // Listen to auth state changes.
   firebase.auth().onAuthStateChanged(authStateObserver)
 }
 
 // Returns the signed-in user's profile pic URL.
-function getProfilePicUrl() {
+const getProfilePicUrl = () => {
   return firebase.auth().currentUser.photoURL
 }
 
 // Returns the signed-in user's display name.
-function getUserName() {
+const getUserName = () => {
   return firebase.auth().currentUser.displayName
 }
 
 // Returns true if a user is signed-in.
-function isUserSignedIn() {
+const isUserSignedIn = () => {
   return !!firebase.auth().currentUser
 }
 
