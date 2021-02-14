@@ -142,6 +142,21 @@ const DOM_EVENTS = (() => {
     : []
   let myLibrary = []
 
+  const _addBookToDom = library => {
+    libraryContainer.innerHTML = ''
+    myLibrary.library.forEach(book => {
+      const bookElement = bookContainer(book)
+      libraryContainer.appendChild(bookElement)
+    })
+    libraryContainer.onclick = ({ target }) => {
+      if (target.dataset.delete) {
+        library.removeBook(target.parentElement.dataset.id)
+      } else if (target.dataset.isRead) {
+        library.toggleIsRead(target.dataset.id)
+      }
+    }
+  }
+
   const loadLibrary = () => {
     const query = firebase
       .firestore()
@@ -150,26 +165,10 @@ const DOM_EVENTS = (() => {
     query.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
         console.log(change)
-        if (change.type === 'removed') {
-          console.log(change)
-        } else {
-          const documents = change.doc.data()
-          myLibrary = new Library(Object.values(documents))
-
-          libraryContainer.innerHTML = ''
-          myLibrary.library.forEach(book => {
-            const bookElement = bookContainer(book)
-            libraryContainer.appendChild(bookElement)
-          })
-          libraryContainer.onclick = ({ target }) => {
-            if (target.dataset.delete) {
-              myLibrary.removeBook(target.parentElement.dataset.id)
-            } else if (target.dataset.isRead) {
-              myLibrary.toggleIsRead(target.dataset.id)
-            }
-          }
-          console.log(myLibrary.library)
-        }
+        const documents = change.doc.data()
+        myLibrary = new Library(Object.values(documents))
+        _addBookToDom(myLibrary)
+        console.log(myLibrary.library)
       })
     })
   }
