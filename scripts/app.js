@@ -140,6 +140,7 @@ const DOM_EVENTS = (() => {
   const libraryArr = localStorage.getItem('myLibrary')
     ? JSON.parse(localStorage.getItem('myLibrary'))
     : []
+  let myLibrary = []
 
   const loadLibrary = () => {
     const query = firebase
@@ -153,7 +154,7 @@ const DOM_EVENTS = (() => {
           console.log(change)
         } else {
           const documents = change.doc.data()
-          const myLibrary = new Library(Object.values(documents))
+          myLibrary = new Library(Object.values(documents))
 
           libraryContainer.innerHTML = ''
           myLibrary.library.forEach(book => {
@@ -175,6 +176,7 @@ const DOM_EVENTS = (() => {
 
   const clearLibrary = () => {
     libraryContainer.innerHTML = ''
+    myLibrary = []
   }
 
   const _resetForm = () => {
@@ -184,19 +186,23 @@ const DOM_EVENTS = (() => {
     isRead.checked = false
   }
 
-  addBook.onclick = () => modal.classList.toggle('closed')
-
-  form.onsubmit = e => {
-    e.preventDefault()
+  const addBookToLibrary = () => {
     const newBook = new Book(
       author.value,
       title.value,
       pages.value,
       isRead.checked
     )
-    myLibrary.addBookToLibrary(newBook)
-    myLibrary.addBookToDom(myLibrary.library)
+    console.log({ ...newBook })
+    myLibrary.addBookToLibrary({ ...newBook })
     modal.classList.toggle('closed')
+  }
+
+  addBook.onclick = () => modal.classList.toggle('closed')
+
+  form.onsubmit = e => {
+    e.preventDefault()
+    addBookToLibrary()
     _resetForm()
   }
 
