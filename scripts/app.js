@@ -9,13 +9,13 @@ const firebaseAuth = (() => {
       .signInWithPopup(provider)
       .then(result => {
         const credential = result.credential
-        const user = result.user
       })
       .catch(error => {
         const errorCode = error.code
         const errorMessage = error.message
         const email = error.email
         const credential = error.credential
+        console.log({ errorMessage })
       })
   }
 
@@ -25,31 +25,24 @@ const firebaseAuth = (() => {
 
   const authStateObserver = user => {
     if (user) {
-      // User is signed in!
-      // Get the signed-in user's profile pic and name.
       const profilePicUrl = getProfilePicUrl()
       const userName = getUserName()
       signInBtn.style.display = 'none'
       signOutBtn.style.display = 'block'
     } else {
-      // User is signed out!
-      // Hide user's profile and sign-out button.
       signOutBtn.style.display = 'none'
       signInBtn.style.display = 'block'
     }
   }
 
   const initFirebaseAuth = () => {
-    // Listen to auth state changes.
     firebase.auth().onAuthStateChanged(authStateObserver)
   }
 
-  // Returns the signed-in user's profile pic URL.
   const getProfilePicUrl = () => {
     return firebase.auth().currentUser.photoURL
   }
 
-  // Returns the signed-in user's display name.
   const getUserName = () => {
     return firebase.auth().currentUser.displayName
   }
@@ -74,8 +67,7 @@ const signOutBtn = document.querySelector('#signOut')
 
 signInBtn.onclick = async () => {
   await signIn()
-  const name = await getUserName()
-  console.log(name)
+  console.log(firebase.auth().currentUser.uid)
 }
 
 signOutBtn.onclick = async () => {
@@ -104,6 +96,22 @@ class Library {
   }
   saveLibrary = () => {
     localStorage.setItem('myLibrary', JSON.stringify(this.library))
+    const library = this.library.reduce((obj, item, index) => {
+      obj[index] = item
+      return obj
+    }, {})
+    function saveMessage(item) {
+      return firebase
+        .firestore()
+        .collection(firebase.auth().currentUser.uid)
+        .doc('library')
+        .set(item)
+        .catch(function (error) {
+          console.error('Error writing new message to database', error)
+        })
+    }
+    saveMessage(library)
+    console.log(library, this.library)
   }
   addBookToLibrary = book => {
     this.library.push(book)
