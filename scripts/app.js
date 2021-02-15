@@ -1,7 +1,4 @@
 const firebaseAuth = (() => {
-  const signInBtn = document.querySelector('#signIn')
-  const signOutBtn = document.querySelector('#signOut')
-  const addBookBtn = document.querySelector('#addBook')
   const signIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider()
     return firebase
@@ -20,17 +17,22 @@ const firebaseAuth = (() => {
     return firebase.auth().signOut()
   }
 
+  let unsubscribe = () => {}
   const authStateObserver = user => {
     if (user) {
-      signInBtn.style.display = 'none'
-      signOutBtn.style.display = 'block'
-      addBookBtn.style.display = 'block'
-      DOM_EVENTS.loadLibrary()
+      const query = firebase
+        .firestore()
+        .collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .collection('library')
+
+      unsubscribe = query.onSnapshot(snapshot =>
+        DOM_EVENTS.loadLibrary(snapshot)
+      )
     } else {
-      signOutBtn.style.display = 'none'
-      signInBtn.style.display = 'block'
-      addBookBtn.style.display = 'none'
+      unsubscribe()
       DOM_EVENTS.clearLibrary()
+      console.log('Signed out.')
     }
   }
 
@@ -49,9 +51,6 @@ const { signIn, signOut, initFirebaseAuth } = firebaseAuth
 class Library {
   constructor(library) {
     this.library = library
-  }
-  addBookToDom = () => {
-    DOM_EVENTS.loadLibrary()
   }
   addBookToLibrary = book => {
     db.collection('users')
@@ -103,6 +102,9 @@ const DOM_EVENTS = (() => {
   const author = document.querySelector('#author')
   const isRead = document.querySelector('#isRead')
   const addBook = document.querySelector('#addBook')
+  const signInBtn = document.querySelector('#signIn')
+  const signOutBtn = document.querySelector('#signOut')
+  const addBookBtn = document.querySelector('#addBook')
   const libraryContainer = document.querySelector('#libraryContainer')
 
   let myLibrary = new Library([])
@@ -122,28 +124,27 @@ const DOM_EVENTS = (() => {
     }
   }
 
-  const loadLibrary = () => {
-    const query = firebase
-      .firestore()
-      .collection('users')
-      .doc(firebase.auth().currentUser.uid)
-      .collection('library')
-
-    query.onSnapshot(snapshot => {
-      snapshot.docChanges().forEach(change => {
-        if (['modified', 'removed'].includes(change.type)) {
-          return _addBooksToDom(myLibrary)
-        }
+  const loadLibrary = snapshot => {
+    snapshot.docChanges().forEach(change => {
+      if (['modified', 'removed'].includes(change.type)) {
+        _addBooksToDom(myLibrary)
+      } else {
         const document = change.doc.data()
         myLibrary.library.push({ id: change.doc.id, ...document })
-      })
-      _addBooksToDom(myLibrary)
-      console.log(myLibrary.library)
+        _addBooksToDom(myLibrary)
+      }
     })
+    console.log(myLibrary.library)
+    signInBtn.style.display = 'none'
+    signOutBtn.style.display = 'block'
+    addBookBtn.style.display = 'block'
   }
 
   const clearLibrary = () => {
     libraryContainer.innerHTML = ''
+    signOutBtn.style.display = 'none'
+    signInBtn.style.display = 'block'
+    addBookBtn.style.display = 'none'
     myLibrary = new Library([])
   }
 
@@ -197,5 +198,4 @@ signInBtn.onclick = async () => {
 
 signOutBtn.onclick = async () => {
   await signOut()
-  console.log('Signed Out')
 }
