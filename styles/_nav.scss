@@ -15,6 +15,23 @@ nav {
       font-size: 2rem;
       color: rgb(29, 29, 29);
     }
+    .buttons {
+      display: flex;
+    }
+    button {
+      color: white;
+      background: var(--main-color);
+      padding: 8px 16px;
+      outline: none;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      transition: 0.2s ease-in-out;
+      &:hover {
+        filter: brightness(1.1);
+      }
+    }
     .add {
       position: relative;
 

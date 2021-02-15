@@ -239,7 +239,6 @@ const signOutBtn = document.querySelector('#signOut')
 
 signInBtn.onclick = async () => {
   await signIn()
-  console.log(firebase.auth().currentUser.uid)
 }
 
 signOutBtn.onclick = async () => {

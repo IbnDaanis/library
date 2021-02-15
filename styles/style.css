@@ -241,6 +241,30 @@ nav .container h1 {
   color: #1d1d1d;
 }
 
+nav .container .buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+nav .container button {
+  color: white;
+  background: var(--main-color);
+  padding: 8px 16px;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
+}
+
+nav .container button:hover {
+  -webkit-filter: brightness(1.1);
+          filter: brightness(1.1);
+}
+
 nav .container .add {
   position: relative;
 }
