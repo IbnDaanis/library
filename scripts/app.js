@@ -3,19 +3,15 @@ const firebaseAuth = (() => {
   const signOutBtn = document.querySelector('#signOut')
   const addBookBtn = document.querySelector('#addBook')
   const signIn = () => {
-    // Sign into Firebase using popup auth & Google as the identity provider.
     const provider = new firebase.auth.GoogleAuthProvider()
     return firebase
       .auth()
       .signInWithPopup(provider)
       .then(result => {
-        const credential = result.credential
+        console.log('Signed in. ', result.credential)
       })
       .catch(error => {
-        const errorCode = error.code
         const errorMessage = error.message
-        const email = error.email
-        const credential = error.credential
         console.log({ errorMessage })
       })
   }
@@ -26,8 +22,6 @@ const firebaseAuth = (() => {
 
   const authStateObserver = user => {
     if (user) {
-      const profilePicUrl = getProfilePicUrl()
-      const userName = getUserName()
       signInBtn.style.display = 'none'
       signOutBtn.style.display = 'block'
       addBookBtn.style.display = 'block'
@@ -44,33 +38,13 @@ const firebaseAuth = (() => {
     firebase.auth().onAuthStateChanged(authStateObserver)
   }
 
-  const getProfilePicUrl = () => {
-    return firebase.auth().currentUser.photoURL
-  }
-
-  const getUserName = () => {
-    return firebase.auth().currentUser.displayName
-  }
-
-  // Returns true if a user is signed-in.
-  const isUserSignedIn = () => {
-    return !!firebase.auth().currentUser
-  }
   return {
     signIn,
     signOut,
-    getUserName,
-    isUserSignedIn,
     initFirebaseAuth,
   }
 })()
-const {
-  signIn,
-  signOut,
-  getUserName,
-  isUserSignedIn,
-  initFirebaseAuth,
-} = firebaseAuth
+const { signIn, signOut, initFirebaseAuth } = firebaseAuth
 
 class Library {
   constructor(library) {
