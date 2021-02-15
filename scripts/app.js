@@ -151,7 +151,7 @@ const DOM_EVENTS = (() => {
   const addBook = document.querySelector('#addBook')
   const libraryContainer = document.querySelector('#libraryContainer')
 
-  const myLibrary = new Library([])
+  let myLibrary = new Library([])
 
   const _addBooksToDom = library => {
     libraryContainer.innerHTML = ''
@@ -190,7 +190,7 @@ const DOM_EVENTS = (() => {
 
   const clearLibrary = () => {
     libraryContainer.innerHTML = ''
-    myLibrary = []
+    myLibrary = new Library([])
   }
 
   const _resetForm = () => {
