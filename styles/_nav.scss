@@ -17,18 +17,6 @@ nav {
     }
     .add {
       position: relative;
-      .addABookHere {
-        position: absolute;
-        top: 50%;
-        left: -500%;
-        width: 160px;
-        transition: opacity 0.5s ease-in-out;
-        animation: 1s linear 0s infinite alternate hover;
-        pointer-events: none;
-        @media (max-width: 550px) {
-          display: none;
-        }
-      }
 
       button {
         color: var(--main-color);
@@ -36,7 +24,7 @@ nav {
         outline: none;
         cursor: pointer;
         border: none;
-        font-size: 3rem;
+        font-size: 1.2rem;
         transition: 0.2s ease-in-out;
         &:hover {
           filter: brightness(1.1);

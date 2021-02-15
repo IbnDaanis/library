@@ -1,6 +1,7 @@
 const firebaseAuth = (() => {
   const signInBtn = document.querySelector('#signIn')
   const signOutBtn = document.querySelector('#signOut')
+  const addBookBtn = document.querySelector('#addBook')
   const signIn = () => {
     // Sign into Firebase using popup auth & Google as the identity provider.
     const provider = new firebase.auth.GoogleAuthProvider()
@@ -29,10 +30,12 @@ const firebaseAuth = (() => {
       const userName = getUserName()
       signInBtn.style.display = 'none'
       signOutBtn.style.display = 'block'
+      addBookBtn.style.display = 'block'
       DOM_EVENTS.loadLibrary()
     } else {
       signOutBtn.style.display = 'none'
       signInBtn.style.display = 'block'
+      addBookBtn.style.display = 'none'
       DOM_EVENTS.clearLibrary()
     }
   }

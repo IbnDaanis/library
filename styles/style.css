@@ -245,31 +245,13 @@ nav .container .add {
   position: relative;
 }
 
-nav .container .add .addABookHere {
-  position: absolute;
-  top: 50%;
-  left: -500%;
-  width: 160px;
-  -webkit-transition: opacity 0.5s ease-in-out;
-  transition: opacity 0.5s ease-in-out;
-  -webkit-animation: 1s linear 0s infinite alternate hover;
-          animation: 1s linear 0s infinite alternate hover;
-  pointer-events: none;
-}
-
-@media (max-width: 550px) {
-  nav .container .add .addABookHere {
-    display: none;
-  }
-}
-
 nav .container .add button {
   color: var(--main-color);
   background: none;
   outline: none;
   cursor: pointer;
   border: none;
-  font-size: 3rem;
+  font-size: 1.2rem;
   -webkit-transition: 0.2s ease-in-out;
   transition: 0.2s ease-in-out;
 }
