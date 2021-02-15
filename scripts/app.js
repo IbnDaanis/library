@@ -79,26 +79,6 @@ class Library {
   addBookToDom = () => {
     DOM_EVENTS.loadLibrary()
   }
-  saveLibrary = () => {
-    // localStorage.setItem('myLibrary', JSON.stringify(this.library))
-    // const library = this.library.reduce((obj, item, index) => {
-    //   obj[index] = item
-    //   return obj
-    // }, {})
-    // const saveMessage = item => {
-    //   return firebase
-    //     .firestore()
-    //     .collection('users')
-    //     .doc(firebase.auth().currentUser.uid)
-    //     .collection('library')
-    //     .doc(item)
-    //     .catch(function (error) {
-    //       console.error('Error writing new message to database', error)
-    //     })
-    // }
-    // saveMessage(library)
-    // console.log(library, this.library)
-  }
   addBookToLibrary = book => {
     db.collection('users')
       .doc(firebase.auth().currentUser.uid)
