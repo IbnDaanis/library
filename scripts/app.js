@@ -148,13 +148,6 @@ const DOM_EVENTS = (() => {
     myLibrary = new Library([])
   }
 
-  const _resetForm = () => {
-    author.value = ''
-    title.value = ''
-    pages.value = ''
-    isRead.checked = false
-  }
-
   const addBookToLibraryForm = () => {
     const newBook = new Book(
       author.value,
@@ -172,7 +165,7 @@ const DOM_EVENTS = (() => {
   form.onsubmit = e => {
     e.preventDefault()
     addBookToLibraryForm()
-    _resetForm()
+    form.reset()
   }
 
   document.body.onclick = ({ target }) => {
